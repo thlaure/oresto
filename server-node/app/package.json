@@ -1,0 +1,16 @@
+{
+  "name": "oresto",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mariadb": "^3.2.2",
+    "nodemon": "^3.0.1"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  }
+}

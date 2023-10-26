@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  nodeserver:
+    build: 
+      context: ./server-node
+      args:
+        NODEJS_VERSION: ${NODEJS_VERSION}
+    ports:
+      - ${NODEJS_EXTERNAL_PORT}:${NODEJS_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./server-node/app:/app
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:${MARIADB_VERSION}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+    ports:
+      - ${MARIADB_EXTERNAL_PORT}:${MARIADB_PORT}
+    volumes:
+      - ./mariadb-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:${PHPMYADMIN_VERSION}
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: ${MARIADB_PORT}
+    ports:
+      - ${PHPMYADMIN_EXTERNAL_PORT}:${PHPMYADMIN_PORT}
+    depends_on:
+      - mariadb

@@ -6,6 +6,7 @@ services:
       context: ./server-node
       args:
         NODEJS_VERSION: ${NODEJS_VERSION}
+        ENV: ${ENV}
     ports:
       - ${NODEJS_EXTERNAL_PORT}:${NODEJS_PORT}
     env_file:

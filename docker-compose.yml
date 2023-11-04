@@ -16,6 +16,17 @@ services:
     depends_on:
       - mariadb
 
+  clientapp:
+    build:
+      context: ./client-app
+      args:
+        NODEJS_VERSION: ${NODEJS_VERSION}
+        NGINX_VERSION: ${NGINX_VERSION}
+    env_file:
+      - .env
+    ports:
+      - ${CLIENT_APP_EXTERNAL_PORT}:${CLIENT_APP_PORT}
+
   mariadb:
     image: mariadb:${MARIADB_VERSION}
     environment:

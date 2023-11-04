@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `dish` (
     `price` FLOAT NOT NULL,
     `image` VARCHAR(255) NULL,
     `category_id` INT NULL,
-    `type_id` INT NOT NULL,
+    `type_id` INT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_roman_ci;
 

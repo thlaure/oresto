@@ -26,6 +26,8 @@ services:
       - .env
     ports:
       - ${CLIENT_APP_EXTERNAL_PORT}:${CLIENT_APP_PORT}
+    volumes:
+      - ./client-app/app:/app
 
   mariadb:
     image: mariadb:${MARIADB_VERSION}

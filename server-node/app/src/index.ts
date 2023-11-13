@@ -8,6 +8,7 @@ dotenv.config({path: __dirname + '/../../../.env'});
 const app: Express = express();
 
 app.use(cors())
+app.use(express.json());
 
 interface DatabaseConfig {
   host: string;
@@ -26,10 +27,26 @@ const dbConfig: DatabaseConfig = {
 const db: Pool = mysql.createPool(dbConfig);
 
 app.get('/todolist', (req: Request, res: Response) => {
-  const SelectQuery = "SELECT * FROM todo";
-  db.query(SelectQuery, (err, result) => {
+  const selectQuery = "SELECT * FROM todo";
+  db.query(selectQuery, (err, result) => {
       if (err) console.log(err);
       res.send(result)
+  })
+});
+
+app.post('/todolist', (req: Request, res: Response) => {
+  const label = req.body.label;
+
+  if (!label) {
+    res.status(400).send('Label is required');
+    return;
+  }
+
+  const insertQuery = "INSERT INTO todo (label) VALUES (?)";
+
+  db.query(insertQuery, [label], (err, result: any) => {
+    if (err) console.log(err);
+    res.send(result)
   })
 });
 

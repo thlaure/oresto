@@ -1,7 +1,8 @@
 import ListItem from './ListItem.tsx';
+import ITask from '../interfaces/ITasks.tsx';
 
 interface Props {
-    items: string[]
+    items: ITask[]
 }
 
 function ListGroup({ items }: Props) {
@@ -10,7 +11,7 @@ function ListGroup({ items }: Props) {
             <div>
                 <ul>
                     {items.map((item, index) => (
-                        <ListItem key={index} label={item} />
+                        <ListItem key={index} item={item} />
                     ))}
                 </ul>
             </div>

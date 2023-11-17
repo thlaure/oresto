@@ -5,18 +5,20 @@ import Title from './components/Title.tsx';
 import Button from './components/Button.tsx';
 import Input from './components/Input.tsx';
 
+import ITask from './interfaces/ITasks.tsx';
+
 function TodoApp() {
   const [inputText, setInputText] = useState<string>('');
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>([]);
 
   // Connect the Express app to request database
   useEffect(() => {
     fetch('http://localhost:8000/todolist')
       .then(response => response.json())
       .then(data => {
-        const tasks: string[] = [];
+        const tasks: ITask[] = [];
         for (let i = 0; i < data.length; i++) {
-          tasks.push(data[i].label);
+          tasks.push(data[i]);
         }
         setTasks(tasks);
       })
@@ -27,20 +29,25 @@ function TodoApp() {
     setInputText(e.target.value);
   }
   
-  function addTask(task: string) {
-    if (task !== '' && !tasks.includes(task)) {
+  function addTask(taskLabel: string) {
+    const taskExists = tasks.some(item => item.label === taskLabel);
+    if (taskLabel && !taskExists) {
+      const task: ITask = {
+        label: taskLabel,
+        is_done: false
+      }
       saveTask(task);
       setInputText('');
     }
   }
 
-  function saveTask(task: string) {
+  function saveTask(task: ITask) {
     fetch('http://localhost:8000/todolist', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ label: task })
+      body: JSON.stringify({ label: task.label, is_done: task.is_done })
     })
       .then(response => response.json())
       .then(data => {

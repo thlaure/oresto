@@ -50,6 +50,22 @@ app.post('/todolist', (req: Request, res: Response) => {
   })
 });
 
+app.put('/todolist', (req: Request, res: Response) => {
+  const id = req.body.id;
+  const isDone = req.body.is_done;
+
+  if (!id) {
+    res.status(400).send('ID is required');
+    return;
+  }
+
+  const updateQuery = "UPDATE todo SET is_done = ? WHERE id = ?";
+  db.query(updateQuery, [isDone, id], (err, result: any) => {
+    if (err) console.log(err);
+    res.send(result)
+  })
+});
+
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
